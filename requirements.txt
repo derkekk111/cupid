@@ -1,5 +1,18 @@
-fastapi
-uvicorn
-sentence-transformers
-numpy
-supabase
+#fastapi
+#uvicorn
+#sentence-transformers
+#numpy
+#supabase
+
+# Core
+fastapi==0.115.*
+uvicorn[standard]==0.30.*
+pydantic==2.*
+supabase==2.*
+
+# ML
+sentence-transformers==2.7.*
+transformers==4.44.*
+# Force CPU-only wheels (tiny) — IMPORTANT:
+--index-url https://download.pytorch.org/whl/cpu
+torch==2.3.*
