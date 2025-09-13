@@ -10,37 +10,30 @@ interface DatingAppProps {
   initialProfiles?: Profile[];
 }
 
-export default function match({ initialProfiles }: DatingAppProps) {
-
-  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles || []);
+export default function Match({ initialProfiles }: DatingAppProps) {
+  const [profilePairs, setProfilePairs] = useState<Profile[][]>([]);
+  const [currentPairIndex, setCurrentPairIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [showMatchResult, setShowMatchResult] = useState<boolean>(false);
   const [matchDecision, setMatchDecision] = useState<boolean>(false);
-  // const [matchScore, setMatchScore] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [matchId, setMatchId] = useState<string | null>(null);
 
   // Load profiles from API if not provided via SSR
   useEffect(() => {
-    if (!initialProfiles) {
-      fetchProfiles();
-    }
-  }, [initialProfiles]);
+    initializeProfiles();
+  }, []);
 
-  const fetchProfiles = async (): Promise<void> => {
+  const initializeProfiles = async (): Promise<void> => {
     setLoading(true);
     try {
-      // const response = await fetch('/api/profiles/random-pair');
-      const response = await getServerSideProps();
-      // if (!response.ok) {
-      //   throw new Error('Failed to fetch profiles');
-      // }
-      if(!response){
-        throw new Error('Failed to fetch profiles!')
+      // Generate multiple profile pairs for infinite flow
+      const pairs: Profile[][] = [];
+      for (let i = 0; i < 5; i++) {
+        const pairData = await getServerSideProps();
+        pairs.push(pairData);
       }
-      // const data: Profile[] = await response.json();
-      // const data: Profile[] = response;
-      // setProfiles(data);
-      setProfiles(response);
+      setProfilePairs(pairs);
     } catch (error) {
       console.error('Error fetching profiles:', error);
     } finally {
@@ -48,12 +41,13 @@ export default function match({ initialProfiles }: DatingAppProps) {
     }
   };
 
-
   const handleMatch = async (isMatch: boolean): Promise<void> => {
-    if (profiles.length < 2) return;
+    if (!profilePairs[currentPairIndex] || profilePairs[currentPairIndex].length < 2) return;
 
+    setIsAnimating(true);
     setMatchDecision(isMatch);
-    setShowMatchResult(true);
+
+    const currentProfiles = profilePairs[currentPairIndex];
 
     // Save match decision to database
     try {
@@ -63,39 +57,69 @@ export default function match({ initialProfiles }: DatingAppProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          profile1Id: profiles[0].id,
-          profile2Id: profiles[1].id,
+          profile1Id: currentProfiles[0].id,
+          profile2Id: currentProfiles[1].id,
           isMatch,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save match');
+      if (response.ok) {
+        const data = await response.json();
+        setMatchId(data.matchId);
       }
-
-      const data = await response.json();
-      setMatchId(data.matchId);
     } catch (error) {
       console.error('Error saving match:', error);
     }
+
+    // Show result for 2 seconds, then move to next pair
+    setShowMatchResult(true);
+    
+    setTimeout(() => {
+      setShowMatchResult(false);
+      moveToNextPair();
+    }, 2000);
   };
 
-  const resetMatch = async (): Promise<void> => {
-    setShowMatchResult(false);
-    setMatchDecision(false);
-    setMatchId(null);
+  const moveToNextPair = async (): Promise<void> => {
+    // Move to next pair
+    const nextIndex = currentPairIndex + 1;
     
-    // Fetch new profiles
-    await fetchProfiles();
+    // If we're running low on pairs, fetch more
+    if (nextIndex >= profilePairs.length - 2) {
+      const newPair = await getServerSideProps();
+      setProfilePairs(prev => [...prev, newPair]);
+    }
+    
+    setCurrentPairIndex(nextIndex);
+    setIsAnimating(false);
+    setMatchId(null);
+  };
+
+  const resetToFirstPair = async (): Promise<void> => {
+    setCurrentPairIndex(0);
+    setShowMatchResult(false);
+    setIsAnimating(false);
+    setMatchId(null);
   };
 
   interface ProfileCardProps {
     profile: Profile;
     side: 'left' | 'right';
+    zIndex: number;
+    isActive: boolean;
+    animationClass?: string;
   }
 
-  const ProfileCard = ({ profile, side }: ProfileCardProps) => (
-    <div className={styles.profileCard}>
+  const ProfileCard = ({ profile, side, zIndex, isActive, animationClass }: ProfileCardProps) => (
+    <div 
+      className={`${styles.profileCard} ${animationClass || ''}`}
+      style={{ 
+        zIndex,
+        opacity: isActive ? 1 : 0.3,
+        transform: `scale(${isActive ? 1 : 0.95}) translateY(${isActive ? 0 : 10}px)`,
+        transition: 'all 0.3s ease-in-out'
+      }}
+    >
       {/* Photo */}
       <div className={styles.photoContainer}>
         <img 
@@ -181,13 +205,13 @@ export default function match({ initialProfiles }: DatingAppProps) {
     );
   }
 
-  if (!profiles || profiles.length < 2) {
+  if (!profilePairs || profilePairs.length === 0) {
     return (
       <div className={styles.noProfiles}>
         <div className={styles.noProfilesContent}>
           <p className={styles.loadingText}>No profiles available</p>
           <button 
-            onClick={fetchProfiles}
+            onClick={initializeProfiles}
             className={styles.resetButton}
             style={{ marginTop: '1rem' }}
           >
@@ -198,28 +222,18 @@ export default function match({ initialProfiles }: DatingAppProps) {
     );
   }
 
+  const currentProfiles = profilePairs[currentPairIndex] || [];
+  const nextProfiles = profilePairs[currentPairIndex + 1] || [];
+
   return (
     <div className={styles.container}>
-      {/* Header */}
-      {/* <div className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.title}>
-            Cupid Dating App
-          </div>
-          <div className={styles.subtitle}>
-            <Users className={styles.subtitleIcon} />
-            <span className={styles.subtitleText}>Profile Compatibility</span>
-          </div>
-        </div>
-      </div> */}
-
       <div className={styles.main}>
         {!showMatchResult ? (
           <>
             {/* Instructions */}
             <div className={styles.instructions}>
               <h1 className={styles.instructionsTitle}>
-                Are {profiles[0]?.name} and {profiles[1]?.name} a Good Match?
+                Are {currentProfiles[0]?.name} and {currentProfiles[1]?.name} a Good Match?
               </h1>
               <p className={styles.instructionsText}>
                 Review both profiles below and decide if these two people would be compatible. 
@@ -227,142 +241,115 @@ export default function match({ initialProfiles }: DatingAppProps) {
               </p>
             </div>
 
-            {/* Profile Cards Side by Side */}
-            <div className={styles.profilesContainer}>
-              <div className={styles.profileSection}>
+            {/* Profile Cards Stack */}
+            <div className={styles.cardStackContainer}>
+              {/* Left Profile Stack */}
+              <div className={styles.profileStack}>
                 <div className={styles.profileHeader}>
                   <div className={`${styles.profileBadge} ${styles.profileBadge1}`}>
                     Profile 1
                   </div>
                 </div>
-                <ProfileCard profile={profiles[0]} side="left" />
+                
+                {/* Background cards */}
+                {nextProfiles[0] && (
+                  <ProfileCard 
+                    profile={nextProfiles[0]} 
+                    side="left" 
+                    zIndex={1}
+                    isActive={false}
+                  />
+                )}
+                
+                {/* Active card */}
+                {currentProfiles[0] && (
+                  <ProfileCard 
+                    profile={currentProfiles[0]} 
+                    side="left" 
+                    zIndex={2}
+                    isActive={true}
+                    animationClass={isAnimating ? styles.slideOut : ''}
+                  />
+                )}
               </div>
 
-              <div className={styles.profileSection}>
+              {/* Center Match Buttons */}
+              <div className={styles.centerButtons}>
+                <button 
+                  onClick={() => handleMatch(false)}
+                  className={`${styles.button} ${styles.rejectButton}`}
+                  disabled={isAnimating}
+                >
+                  <X className={styles.buttonIcon} />
+                  Pass
+                </button>
+                
+                <button 
+                  onClick={() => handleMatch(true)}
+                  className={`${styles.button} ${styles.matchButton}`}
+                  disabled={isAnimating}
+                >
+                  <Heart className={styles.buttonIcon} />
+                  Match
+                </button>
+              </div>
+
+              {/* Right Profile Stack */}
+              <div className={styles.profileStack}>
                 <div className={styles.profileHeader}>
                   <div className={`${styles.profileBadge} ${styles.profileBadge2}`}>
                     Profile 2
                   </div>
                 </div>
-                <ProfileCard profile={profiles[1]} side="right" />
+                
+                {/* Background cards */}
+                {nextProfiles[1] && (
+                  <ProfileCard 
+                    profile={nextProfiles[1]} 
+                    side="right" 
+                    zIndex={1}
+                    isActive={false}
+                  />
+                )}
+                
+                {/* Active card */}
+                {currentProfiles[1] && (
+                  <ProfileCard 
+                    profile={currentProfiles[1]} 
+                    side="right" 
+                    zIndex={2}
+                    isActive={true}
+                    animationClass={isAnimating ? styles.slideOut : ''}
+                  />
+                )}
               </div>
-            </div>
-
-            {/* Match Decision Buttons */}
-            <div className={styles.buttonsContainer}>
-              <button 
-                onClick={() => handleMatch(false)}
-                className={`${styles.button} ${styles.rejectButton}`}
-              >
-                <X className={styles.buttonIcon} />
-                Not a Match
-              </button>
-              
-              <button 
-                onClick={() => handleMatch(true)}
-                className={`${styles.button} ${styles.matchButton}`}
-              >
-                <Heart className={styles.buttonIcon} />
-                Perfect Match!
-              </button>
             </div>
           </>
         ) : (
-          /* Match Result */
-          <div className={styles.resultContainer}>
-            <div className={styles.resultCard}>
-              <div className={`${styles.resultIcon} ${
-                matchDecision ? styles.matchIcon : styles.noMatchIcon
+          /* Quick Match Result Overlay */
+          <div className={styles.quickResultOverlay}>
+            <div className={styles.quickResultContent}>
+              <div className={`${styles.quickResultIcon} ${
+                matchDecision ? styles.quickMatchIcon : styles.quickNoMatchIcon
               }`}>
                 {matchDecision ? (
-                  <Heart className={styles.resultIconSvg} />
+                  <Heart className={styles.quickResultIconSvg} />
                 ) : (
-                  <X className={styles.resultIconSvg} />
+                  <X className={styles.quickResultIconSvg} />
                 )}
               </div>
-
-              <h2 className={styles.resultTitle}>
-                {matchDecision? "You Think They're a Match!" : "You Think They're Not Compatible"}
-              </h2>
-
-              <div className={styles.resultMessage}>
-                {matchDecision?
-                  "Great eye for compatibility! These profiles show several areas of potential connection."
-                  : "Everyone has different preferences. Maybe they're better as friends, or perhaps you see something that would make them incompatible."
-                }
+              <div className={styles.quickResultText}>
+                {matchDecision ? "It's a Match!" : "No Match"}
               </div>
-
-              {matchId && (
-                <div className={styles.matchId}>
-                  Match ID: {matchId}
-                </div>
-              )}
-
-              <button 
-                onClick={resetMatch}
-                className={styles.resetButton}
-              >
-                Try New Profiles
-              </button>
             </div>
           </div>
         )}
+
+        {/* Counter */}
+        <div className={styles.counter}>
+          Pair {currentPairIndex + 1} of {profilePairs.length}
+        </div>
       </div>
     </div>
   );
 }
-
-// Server-side rendering to pre-load profiles
-// const getServerSideProps: GetServerSideProps<DatingAppProps> = async () => {
-const getServerSideProps = async () => {
-  try {
-
-    //temporary
-    const profiles: Profile[] = [
-      {
-        id: 1,
-        name: "Emma",
-        age: 28,
-        location: "San Francisco, CA",
-        occupation: "UX Designer",
-        education: "Stanford University",
-        bio: "Coffee enthusiast ☕ | Love hiking and exploring new places | Looking for genuine connections",
-        photo: "https://images.unsplash.com/photo-1494790108755-2616c3e09b02?w=400&h=500&fit=crop",
-        interests: ["Photography", "Hiking", "Cooking", "Yoga", "Travel"],
-        personality: ["Creative", "Adventurous", "Thoughtful"],
-        distance: "2 miles away",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      {
-        id: 2,
-        name: "Alex",
-        age: 31,
-        location: "San Francisco, CA",
-        occupation: "Software Engineer",
-        education: "UC Berkeley",
-        bio: "Tech geek 💻 | Weekend warrior | Love good food and better company | Always up for an adventure",
-        photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop",
-        interests: ["Rock Climbing", "Gaming", "Cooking", "Movies", "Startups"],
-        personality: ["Analytical", "Adventurous", "Ambitious"],
-        distance: "1 mile away",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }
-    ];
-
-    // return {
-    //   props: {
-    //     initialProfiles: profiles,
-    //   },
-    // };
-    return profiles;
-  } catch (error) {
-    console.error('Error fetching profiles:', error);
-    return {
-      props: {
-        initialProfiles: [],
-      },
-    };
-  }
-};
