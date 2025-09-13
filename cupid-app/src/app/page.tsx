@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Heart, X, MapPin, Briefcase, GraduationCap, Users, Zap, Loader, ArrowRight } from 'lucide-react';
+import { Heart, X, MapPin, Users, Zap, Loader, ArrowRight } from 'lucide-react';
 
 // Types
 interface Profile {
@@ -8,13 +8,10 @@ interface Profile {
   name: string;
   age: number;
   location: string;
-  occupation: string;
-  education: string;
   bio: string;
   photo: string;
   interests?: string[];
   personality?: string[];
-  distance: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,13 +33,10 @@ const sampleProfiles: Profile[] = [
     name: "Emma",
     age: 28,
     location: "San Francisco, CA",
-    occupation: "UX Designer",
-    education: "Stanford University",
     bio: "Coffee enthusiast ☕ | Love hiking and exploring new places | Looking for genuine connections",
     photo: "https://images.unsplash.com/photo-1494790108755-2616c3e09b02?w=400&h=500&fit=crop",
     interests: ["Photography", "Hiking", "Cooking", "Yoga", "Travel"],
     personality: ["Creative", "Adventurous", "Thoughtful"],
-    distance: "2 miles away",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -51,13 +45,10 @@ const sampleProfiles: Profile[] = [
     name: "Alex",
     age: 31,
     location: "San Francisco, CA",
-    occupation: "Software Engineer",
-    education: "UC Berkeley",
     bio: "Tech geek 💻 | Weekend warrior | Love good food and better company | Always up for an adventure",
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop",
     interests: ["Rock Climbing", "Gaming", "Cooking", "Movies", "Startups"],
     personality: ["Analytical", "Adventurous", "Ambitious"],
-    distance: "1 mile away",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
@@ -585,9 +576,6 @@ export default function CupidDatingApp() {
             alt={profile.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-3 right-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded-full text-xs backdrop-blur">
-            {profile.distance}
-          </div>
         </div>
 
         <div className="p-4">
@@ -601,16 +589,6 @@ export default function CupidDatingApp() {
             <span>{profile.location}</span>
           </div>
 
-          <div className="space-y-2 mb-3 text-sm">
-            <div className="flex items-center gap-1 text-gray-700">
-              <Briefcase className="w-3 h-3" />
-              <span>{profile.occupation}</span>
-            </div>
-            <div className="flex items-center gap-1 text-gray-700">
-              <GraduationCap className="w-3 h-3" />
-              <span>{profile.education}</span>
-            </div>
-          </div>
 
           <p className="text-gray-700 text-sm mb-3 line-clamp-3">
             {profile.bio}
