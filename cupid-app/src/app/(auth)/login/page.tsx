@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from '@/(auth)/Auth.module.css';
+import styles from './login.module.css';
 
 export default function LogIn() {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ export default function LogIn() {
     console.log('Log in data:', formData);
     
     // For demo purposes, redirect to the dating app after "login"
-    router.push('/app');
+    router.push('/match');
   };
 
   return (

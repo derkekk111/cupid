@@ -1,0 +1,145 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+  
+.card {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 28rem;
+    width: 100%;
+}
+  
+.title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+  
+.subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+  
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+  
+.inputGroup {
+    text-align: left;
+}
+  
+.label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+  
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+  
+.input:focus {
+    outline: none;
+    border-color: #ec4899;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+}
+  
+.button {
+    padding: 0.875rem 2rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+  
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+}
+  
+.primaryButton {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: white;
+}
+  
+.primaryButton:hover {
+    background: linear-gradient(135deg, #db2777 0%, #7c3aed 100%);
+}
+  
+.linkText {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+  
+.link {
+    color: #ec4899;
+    text-decoration: none;
+    font-weight: 500;
+}
+  
+.link:hover {
+    color: #db2777;
+    text-decoration: underline;
+}
+  
+.backLink {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+  
+.backLink:hover {
+    color: #374151;
+}
+  
+@media (max-width: 640px) {
+  .card {
+      padding: 2rem;
+      margin: 1rem;
+  }
+    
+  .title {
+      font-size: 2rem;
+  }
+    
+  .form {
+      gap: 1.25rem;
+  }
+    
+  .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+  }
+}

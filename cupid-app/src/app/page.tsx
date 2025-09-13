@@ -7,11 +7,11 @@ export default function Home() {
       <div className={styles.card}>
         <h1 className={styles.title}>Cupid</h1>
         <p className={styles.subtitle}>
-          Find your perfect match through meaningful connections
+          Be the matchmaker and create your love story.
         </p>
         
         <div className={styles.buttonsContainer}>
-          <Link href="/signup" className={`${styles.button} ${styles.signupButton}`}>
+          <Link href="/register" className={`${styles.button} ${styles.signupButton}`}>
             Sign Up
           </Link>
           
