@@ -1,0 +1,107 @@
+/* [project]/Documents/GitHub/cupid/cupid-app/src/app/home.module.css [app-client] (css) */
+.home-module__Sn4ZMq__container {
+  background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%);
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+}
+
+.home-module__Sn4ZMq__card {
+  text-align: center;
+  background: #fff;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 28rem;
+  padding: 3rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .25);
+}
+
+.home-module__Sn4ZMq__title {
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+  color: rgba(0, 0, 0, 0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-bottom: .5rem;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.home-module__Sn4ZMq__subtitle {
+  color: #6b7280;
+  margin-bottom: 2.5rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.home-module__Sn4ZMq__buttonsContainer {
+  flex-direction: column;
+  gap: 1rem;
+  display: flex;
+}
+
+.home-module__Sn4ZMq__button {
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  border-radius: 1rem;
+  padding: .875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .2s ease-in-out;
+  display: inline-block;
+}
+
+.home-module__Sn4ZMq__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, .2);
+}
+
+.home-module__Sn4ZMq__signupButton {
+  color: #fff;
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+}
+
+.home-module__Sn4ZMq__signupButton:hover {
+  background: linear-gradient(135deg, #db2777 0%, #7c3aed 100%);
+}
+
+.home-module__Sn4ZMq__loginButton {
+  color: #6b7280;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+}
+
+.home-module__Sn4ZMq__loginButton:hover {
+  color: #374151;
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+@media (max-width: 640px) {
+  .home-module__Sn4ZMq__card {
+    margin: 1rem;
+    padding: 2rem;
+  }
+
+  .home-module__Sn4ZMq__title {
+    font-size: 2.5rem;
+  }
+
+  .home-module__Sn4ZMq__subtitle {
+    font-size: 1rem;
+  }
+
+  .home-module__Sn4ZMq__buttonsContainer {
+    gap: .75rem;
+  }
+
+  .home-module__Sn4ZMq__button {
+    padding: .75rem 1.5rem;
+    font-size: .875rem;
+  }
+}
+
+/*# sourceMappingURL=Documents_GitHub_cupid_cupid-app_src_app_home_module_d985fa0d.css.map*/
