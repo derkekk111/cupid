@@ -1,0 +1,474 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%);
+}
+  
+.header {
+    background: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e7eb;
+}
+  
+.headerContent {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+  
+.subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+}
+  
+.subtitleIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+  
+.subtitleText {
+    font-size: 0.875rem;
+}
+  
+.main {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+  
+.loading {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.loadingContent {
+    text-align: center;
+}
+  
+.spinner {
+    width: 2rem;
+    height: 2rem;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem auto;
+    color: #ec4899;
+}
+  
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+  
+.loadingText {
+    color: #6b7280;
+}
+  
+.noProfiles {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.noProfilesContent {
+    text-align: center;
+}
+  
+.instructions {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+  
+.instructionsTitle {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+}
+  
+.instructionsText {
+    color: #6b7280;
+    max-width: 42rem;
+    margin: 0 auto;
+}
+  
+.profilesContainer {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+}
+  
+.profileSection {
+    flex: 1;
+    max-width: 28rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+  
+.profileHeader {
+    text-align: center;
+}
+  
+.profileBadge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+  
+.profileBadge1 {
+    background-color: #fce7f3;
+    color: #be185d;
+}
+  
+.profileBadge2 {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+  
+.profileCard {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+}
+  
+.profileCard:hover {
+    transform: scale(1.05);
+}
+  
+.photoContainer {
+    position: relative;
+    height: 16rem;
+    overflow: hidden;
+}
+  
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+  
+.distanceBadge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    backdrop-filter: blur(4px);
+}
+  
+.profileInfo {
+    padding: 1rem;
+}
+  
+.nameAge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+  
+.name {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+}
+  
+.age {
+    font-size: 1.125rem;
+    color: #6b7280;
+}
+  
+.location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+  
+.locationIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+  
+.workEducation {
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+}
+  
+.workEducationItem {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+  
+.workEducationIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+  
+.bio {
+    color: #374151;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+  
+.section {
+    margin-bottom: 0.75rem;
+}
+  
+.sectionTitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+  
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+  
+.interestTag {
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 100%);
+    color: #374151;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    border: 1px solid #f9a8d4;
+}
+  
+.personalityTag {
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    color: #374151;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    border: 1px solid #93c5fd;
+}
+  
+.buttonsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+  
+.button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    transform: scale(1);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+  
+.button:hover {
+    transform: scale(1.05);
+}
+  
+.rejectButton {
+    background: white;
+    border: 2px solid #fecaca;
+    color: #dc2626;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+  
+.rejectButton:hover {
+    background-color: #fef2f2;
+}
+  
+.matchButton {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+  
+.matchButton:hover {
+    background: linear-gradient(135deg, #db2777 0%, #7c3aed 100%);
+}
+  
+.buttonIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+  
+.resultContainer {
+    max-width: 32rem;
+    margin: 0 auto;
+}
+  
+.resultCard {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+    text-align: center;
+}
+  
+.resultIcon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+}
+  
+.matchIcon {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+}
+  
+.noMatchIcon {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+  
+.resultIconSvg {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: white;
+}
+  
+.resultTitle {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+  
+.analysisContainer {
+    background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 100%);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+  
+.analysisHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+  
+.analysisIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #8b5cf6;
+}
+  
+.analysisTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+  
+.score {
+    font-size: 2.25rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.75rem;
+}
+  
+.reasonsContainer {
+    margin-top: 0.5rem;
+}
+  
+.reasonsTitle {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+  
+.reason {
+    font-size: 0.875rem;
+    color: #6b7280;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+  
+.resultMessage {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+  
+.matchId {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-bottom: 1rem;
+}
+  
+.resetButton {
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: scale(1);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+  
+.resetButton:hover {
+    transform: scale(1.05);
+}
+  
+@media (max-width: 768px) {
+  .profilesContainer {
+      flex-direction: column;
+      align-items: center;
+  }
+    
+  .buttonsContainer {
+      gap: 1rem;
+  }
+    
+  .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.875rem;
+  }
+}
