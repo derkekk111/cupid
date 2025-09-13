@@ -15,7 +15,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
   const [profiles, setProfiles] = useState<Profile[]>(initialProfiles || []);
   const [showMatchResult, setShowMatchResult] = useState<boolean>(false);
   const [matchDecision, setMatchDecision] = useState<boolean>(false);
-  const [matchScore, setMatchScore] = useState<number>(0);
+  // const [matchScore, setMatchScore] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [matchId, setMatchId] = useState<string | null>(null);
 
@@ -48,7 +48,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
     }
   };
 
-  
+
   const handleMatch = async (isMatch: boolean): Promise<void> => {
     if (profiles.length < 2) return;
 

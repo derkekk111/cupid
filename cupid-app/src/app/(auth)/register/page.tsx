@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react';
-import supabase from 
+// import supabase from 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './register.module.css';
@@ -13,8 +13,26 @@ export default function SignUp() {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    // question1: '',
+    // question2: '',
+    // question3: '',
+    // question4: '',
+    longq: ''
   });
+  const longques = [
+    "If you were a kitchen appliance, which one would you be and why?", 
+    "Would you rather fight a gorilla once a year or always have one seagull following you everywhere?",
+    "If your left shoe suddenly gained consciousness, what would it say about your life choices?",
+    "What’s the strangest object you could confidently beat someone with in a duel?",
+    "If you had to replace your hands with something else, what would you choose?",
+    "What smell do you think your personality gives off?",
+    "If you had to be haunted by a ghost of any historical figure, who would you pick and why?",
+    "What animal do you think is secretly plotting against humanity?",
+    "If you had to rename the sun, what would you call it?",
+    "You’re cursed so every time you sneeze, something random happens — what would you want it to be?"
+  ]
+  let longquesindx = Math.floor(Math.random() * longques.length);
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -189,6 +207,21 @@ export default function SignUp() {
               required
               disabled={isLoading}
               placeholder="Confirm your password"
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="longq" className={styles.label}>Long Question (max 100 characters)</label>
+            <input
+              type="text"
+              id="longq"
+              name="longq"
+              value={formData.longq}
+              onChange={handleChange}
+              className={styles.input}
+              required
+              disabled={isLoading}
+              placeholder="Maximum 100 characters"
             />
           </div>
 

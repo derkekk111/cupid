@@ -157,8 +157,26 @@ export default function CupidDatingApp() {
       lastName: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      // question1: '',
+      // question2: '',
+      // question3: '',
+      // question4: '',
+      longq: ''
     });
+    const longques = [
+      "If you were a kitchen appliance, which one would you be and why?", 
+      "Would you rather fight a gorilla once a year or always have one seagull following you everywhere?",
+      "If your left shoe suddenly gained consciousness, what would it say about your life choices?",
+      "What’s the strangest object you could confidently beat someone with in a duel?",
+      "If you had to replace your hands with something else, what would you choose?",
+      "What smell do you think your personality gives off?",
+      "If you had to be haunted by a ghost of any historical figure, who would you pick and why?",
+      "What animal do you think is secretly plotting against humanity?",
+      "If you had to rename the sun, what would you call it?",
+      "You’re cursed so every time you sneeze, something random happens — what would you want it to be?"
+    ]
+    let longquesindx = Math.floor(Math.random() * longques.length);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -329,6 +347,21 @@ export default function CupidDatingApp() {
               />
             </div>
 
+            <div className="text-left">
+              <label htmlFor="longq" className="block text-sm font-medium text-gray-700 mb-2">Long Question (max 100 characters)</label>
+              <input
+                type="text"
+                id="longq"
+                name="longq"
+                value={formData.longq}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none transition-colors"
+                required
+                disabled={isLoading}
+                placeholder="Maximum 100 characters"
+              />
+            </div>
+
             <button 
               type="submit" 
               className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
@@ -488,44 +521,44 @@ export default function CupidDatingApp() {
     const [loading, setLoading] = useState(false);
     const [matchId, setMatchId] = useState(null);
 
-    const calculateCompatibility = () => {
-      if (profiles.length < 2) return { score: 0, reasons: [] };
+    // const calculateCompatibility = () => {
+    //   if (profiles.length < 2) return { score: 0, reasons: [] };
       
-      const [profile1, profile2] = profiles;
-      let score = 0;
-      const reasons = [];
+    //   const [profile1, profile2] = profiles;
+    //   let score = 0;
+    //   const reasons = [];
 
-      const sharedInterests = profile1.interests?.filter(interest => 
-        profile2.interests?.includes(interest)
-      ) || [];
+    //   const sharedInterests = profile1.interests?.filter(interest => 
+    //     profile2.interests?.includes(interest)
+    //   ) || [];
       
-      if (sharedInterests.length > 0) {
-        score += sharedInterests.length * 20;
-        reasons.push(`Both love ${sharedInterests.join(' and ')}`);
-      }
+    //   if (sharedInterests.length > 0) {
+    //     score += sharedInterests.length * 20;
+    //     reasons.push(`Both love ${sharedInterests.join(' and ')}`);
+    //   }
 
-      const ageDiff = Math.abs(profile1.age - profile2.age);
-      if (ageDiff <= 5) {
-        score += 15;
-        reasons.push("Similar age range");
-      }
+    //   const ageDiff = Math.abs(profile1.age - profile2.age);
+    //   if (ageDiff <= 5) {
+    //     score += 15;
+    //     reasons.push("Similar age range");
+    //   }
 
-      if (profile1.location === profile2.location) {
-        score += 25;
-        reasons.push(`Both in ${profile1.location.split(',')[0]}`);
-      }
+    //   if (profile1.location === profile2.location) {
+    //     score += 25;
+    //     reasons.push(`Both in ${profile1.location.split(',')[0]}`);
+    //   }
 
-      const sharedTraits = profile1.personality?.filter(trait => 
-        profile2.personality?.includes(trait)
-      ) || [];
+    //   const sharedTraits = profile1.personality?.filter(trait => 
+    //     profile2.personality?.includes(trait)
+    //   ) || [];
       
-      if (sharedTraits.length > 0) {
-        score += sharedTraits.length * 15;
-        reasons.push(`Both are ${sharedTraits.join(' and ')}`);
-      }
+    //   if (sharedTraits.length > 0) {
+    //     score += sharedTraits.length * 15;
+    //     reasons.push(`Both are ${sharedTraits.join(' and ')}`);
+    //   }
 
-      return { score: Math.min(score, 100), reasons };
-    };
+    //   return { score: Math.min(score, 100), reasons };
+    // };
 
     const handleMatch = async (isMatch) => {
       if (profiles.length < 2) return;
