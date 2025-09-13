@@ -62,7 +62,7 @@ def process_new_answer(answer_id: int):
             "similarity": sim
         }).execute()
 
-    print(f"✅ Processed answer {ans['id']} and computed {len(others)} similarities.")
+    print(f"Processed answer {ans['id']} and computed {len(others)} similarities.")
 
 # -----------------------------
 # FastAPI server
