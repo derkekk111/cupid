@@ -1,0 +1,671 @@
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 50%, #fef7f0 100%);
+  }
+  
+  .header {
+    background: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .headerContent {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .logo {
+    width: 2rem;
+    height: 2rem;
+    color: #ec4899;
+  }
+  
+  .headerTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+  }
+  
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .headerButton {
+    padding: 0.5rem;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .headerButton:hover {
+    color: #ec4899;
+  }
+  
+  .main {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+  
+  .profileCard {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .photoContainer {
+    position: relative;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #fce7f3 0%, #fdf2f8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .mainPhoto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .cameraIcon {
+    width: 4rem;
+    height: 4rem;
+    color: #9ca3af;
+  }
+  
+  .editButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  .editButton:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .editIcon {
+    width: 1rem;
+    height: 1rem;
+    color: #6b7280;
+  }
+  
+  .profileContent {
+    padding: 1.5rem;
+  }
+  
+  .photoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .additionalPhoto {
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: #f3f4f6;
+  }
+  
+  .additionalPhotoImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .basicInfo {
+    margin-bottom: 1.5rem;
+  }
+  
+  .nameSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+  }
+  
+  .age {
+    font-size: 1.125rem;
+    color: #6b7280;
+  }
+  
+  .infoList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+  
+  .infoItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .infoIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .statsCard {
+    margin-top: 1.5rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  .statsHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .trophyIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #f59e0b;
+  }
+  
+  .statsTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .statsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .statItem {
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .statItemPink {
+    background-color: #fdf2f8;
+  }
+  
+  .statItemGreen {
+    background-color: #f0fdf4;
+  }
+  
+  .statItemBlue {
+    background-color: #eff6ff;
+  }
+  
+  .statItemPurple {
+    background-color: #faf5ff;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  
+  .statValuePink {
+    color: #ec4899;
+  }
+  
+  .statValueGreen {
+    color: #10b981;
+  }
+  
+  .statValueBlue {
+    color: #3b82f6;
+  }
+  
+  .statValuePurple {
+    color: #8b5cf6;
+  }
+  
+  .statLabel {
+    color: #6b7280;
+  }
+  
+  .tabsCard {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .tabNav {
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+  }
+  
+  .tabButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .tabButtonActive {
+    color: #ec4899;
+    border-bottom: 2px solid #ec4899;
+    background-color: #fdf2f8;
+  }
+  
+  .tabButtonInactive {
+    color: #6b7280;
+  }
+  
+  .tabButtonInactive:hover {
+    color: #374151;
+  }
+  
+  .tabIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .tabContent {
+    padding: 1.5rem;
+  }
+  
+  .sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .editLink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ec4899;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .editLink:hover {
+    color: #be185d;
+  }
+  
+  .questionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .questionItem {
+    background-color: #f9fafb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+  }
+  
+  .questionText {
+    font-weight: 500;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+  
+  .answerContent {
+    color: #374151;
+  }
+  
+  .multipleChoiceAnswer {
+    margin-bottom: 0.5rem;
+  }
+  
+  .choiceBadge {
+    display: inline-block;
+    background-color: #fce7f3;
+    color: #be185d;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .openEndedAnswer {
+    line-height: 1.6;
+  }
+  
+  .matchesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .matchCard {
+    background-color: #f9fafb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  .matchCard:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .matchContent {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .matchPhoto {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .matchInfo {
+    flex: 1;
+  }
+  
+  .matchHeader {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    margin-bottom: 0.25rem;
+    gap: 1rem;
+  }
+  
+  .matchName {
+    font-weight: 600;
+    color: #1f2937;
+    flex: 1;
+  }
+  
+  .matchMeta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .compatibilityText {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+  
+  .statusIndicator {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+  }
+  
+  .statusPending {
+    background-color: #f59e0b;
+  }
+  
+  .statusLiked {
+    background-color: #10b981;
+  }
+  
+  .statusChatting {
+    background-color: #3b82f6;
+  }
+  
+  .matchDetails {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+  
+  .matchActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .actionButton {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .likeButton {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .likeButton:hover {
+    background-color: #bbf7d0;
+  }
+  
+  .passButton {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
+  
+  .passButton:hover {
+    background-color: #fecaca;
+  }
+  
+  .chatButton {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+  }
+  
+  .chatButton:hover {
+    background-color: #bfdbfe;
+  }
+  
+  .actionIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  
+  .waitingBadge {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+  }
+  
+  .activityList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .activityItem {
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border-width: 1px;
+  }
+  
+  .activitySuccess {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+  }
+  
+  .activityFeedback {
+    background-color: #eff6ff;
+    border-color: #bfdbfe;
+  }
+  
+  .activityLeaderboard {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+  }
+  
+  .activityContent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .activityIcon {
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+  
+  .activityIconSuccess {
+    background-color: #dcfce7;
+  }
+  
+  .activityIconFeedback {
+    background-color: #dbeafe;
+  }
+  
+  .activityIconLeaderboard {
+    background-color: #fef3c7;
+  }
+  
+  .activityIconImg {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .activityIconSuccess .activityIconImg {
+    color: #16a34a;
+  }
+  
+  .activityIconFeedback .activityIconImg {
+    color: #2563eb;
+  }
+  
+  .activityIconLeaderboard .activityIconImg {
+    color: #d97706;
+  }
+  
+  .activityText {
+    flex: 1;
+  }
+  
+  .activityTitle {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  
+  .activityDescription {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0.25rem 0;
+  }
+  
+  .activityTime {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+  
+  .continueButton {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .ctaButton {
+    background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .ctaButton:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #db2777 0%, #e11d48 100%);
+  }
+  
+  @media (max-width: 768px) {
+    .main {
+      padding: 1rem;
+    }
+    
+    .grid {
+      gap: 1.5rem;
+    }
+    
+    .matchContent {
+      flex-direction: column;
+      text-align: center;
+      gap: 0.75rem;
+    }
+    
+    .matchHeader {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .tabNav {
+      flex-direction: column;
+    }
+    
+    .statsGrid {
+      grid-template-columns: 1fr;
+    }
+  }

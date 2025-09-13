@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Heart, X, MapPin, Briefcase, GraduationCap, Users, Zap, Loader, ArrowRight } from 'lucide-react';
+import supabase from "@/config/supabaseClient"
+import { Question } from '@/types';
+// import QuizForm from '@/components/quizform/Quizform';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // Types
 interface Profile {
@@ -100,8 +105,7 @@ export default function CupidDatingApp() {
             Cupid
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Find your perfect match through intelligent compatibility analysis. 
-            Swipe smarter, not harder.
+            Be a matchmaker and facilitate the best couple!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -153,17 +157,20 @@ export default function CupidDatingApp() {
   // Register Screen Component
   const RegisterScreen = () => {
     const [formData, setFormData] = useState({
-      firstName: '',
-      lastName: '',
+
+      first_name: '',
+      last_name: '',
+      age: '',
       email: '',
       password: '',
       confirmPassword: '',
-      // question1: '',
-      // question2: '',
-      // question3: '',
-      // question4: '',
+      question1: '',
+      question2: '',
+      question3: '',
+      question4: '',
       longq: ''
     });
+    
     const longques = [
       "If you were a kitchen appliance, which one would you be and why?", 
       "Would you rather fight a gorilla once a year or always have one seagull following you everywhere?",
@@ -176,7 +183,84 @@ export default function CupidDatingApp() {
       "If you had to rename the sun, what would you call it?",
       "You’re cursed so every time you sneeze, something random happens — what would you want it to be?"
     ]
-    let longquesindx = Math.floor(Math.random() * longques.length);
+    const [longquesindx] = useState(() => Math.floor(Math.random() * longques.length));
+
+    const q1 = [
+      "Would you rather go on a first date at a fancy five-course restaurant or at a hole-in-the-wall food truck?",
+      "Would you rather share a huge platter with someone or keep your own separate dish?",
+      "Would you rather cook dinner for a date or have them cook for you?",
+      "Would you rather eat only spicy food on every date or only bland food on every date?",
+      "Would you rather have a partner who loves your favorite food but hates your least favorite, or one who shares all your dislikes but none of your favorites?",
+      "Would you rather plan every food outing in advance or always decide last-minute where to eat?",
+      "Would you rather always try something new on dates or always stick to a go-to favorite?"
+    ];
+    const [q1indx] = useState(() => Math.floor(Math.random() * q1.length));
+    const q1samp: Question = {
+      id: 1,
+      text: q1[q1indx],
+      options: [
+        {id: 1, text: "Option 1"},
+        {id: 1, text: "Option 2"}
+      ]
+    }
+
+    const q2 = [
+      "Would you rather argue with your partner loudly once a month or have small passive-aggressive fights every day?",
+      "Would you rather have a partner who is extremely clingy but loving, or very independent but emotionally distant?",
+      "Would you rather go on a spontaneous road trip with your partner or stick to a perfectly planned vacation?",
+      "Would you rather have a partner who remembers every small detail about you or one who surprises you with big gestures?",
+      "Would you rather spend a year in a tiny apartment with your partner or a huge house with constant noise and strangers around?",
+      "Would you rather deal with a partner who's messy but creative, or extremely organized but boring?",
+      "Would you rather your partner always tells the truth brutally or always lies to protect your feelings?"
+    ];
+    const [q2indx] = useState(() => Math.floor(Math.random() * q2.length));
+    const q2samp: Question = {
+      id: 2,
+      text: q2[q2indx],
+      options: [
+        {id: 1, text: "Option 1"},
+        {id: 2, text: "Option 2"}
+      ]
+    }
+
+    const q3 = [
+      "Would you rather date someone who talks to themselves constantly or someone who sings to everything they do?",
+      "Would you rather have a partner who collects strange objects or one who hoards random facts?",
+      "Would you rather date someone who always interrupts with random jokes or someone who is painfully serious?",
+      "Would you rather your partner always reorganizes your things or never notices anything out of place?",
+      "Would you rather date someone who laughs at the worst possible moments or someone who never laughs at anything?",
+      "Would you rather have a partner who insists on bizarre rituals daily or one who refuses any routine at all?",
+      "Would you rather date someone who makes up words all the time or someone who quotes movies constantly?"
+    ];
+    const [q3indx] = useState(() => Math.floor(Math.random() * q3.length));
+    const q3samp: Question = {
+      id: 3,
+      text: q3[q3indx],
+      options: [
+        {id: 1, text: "Option 1"},
+        {id: 2, text: "Option 2"}
+      ]
+    }
+
+    const q4 = [
+      "Would you rather your date’s clothes catch fire during dinner or the food spontaneously explode?",
+      "Would you rather a surprise animal (like a raccoon) shows up on your date or a random parade blocks the restaurant entrance?",
+      "Would you rather your date forget their wallet or accidentally ruin your phone with a drink?",
+      "Would you rather your date gets stuck in a costume for the entire outing or wears mismatched shoes without noticing?",
+      "Would you rather a sudden downpour ruins your picnic or a swarm of bees interrupts your ice cream date?",
+      "Would you rather your date forget your name repeatedly or accidentally insult your favorite hobby?",
+      "Would you rather get locked in an elevator with your date or have the power go out during a candlelit dinner?"
+    ];
+    const [q4indx] = useState(() => Math.floor(Math.random() * q4.length));
+    const q4samp: Question = {
+      id: 4,
+      text: q4[q4indx],
+      options: [
+        {id: 1, text: "Option 1"},
+        {id: 2, text: "Option 2"}
+      ]
+    }
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -190,11 +274,11 @@ export default function CupidDatingApp() {
     };
 
     const validateForm = () => {
-      if (!formData.firstName.trim()) {
+      if (!formData.first_name.trim()) {
         setError('First name is required');
         return false;
       }
-      if (!formData.lastName.trim()) {
+      if (!formData.last_name.trim()) {
         setError('Last name is required');
         return false;
       }
@@ -216,30 +300,43 @@ export default function CupidDatingApp() {
       
       setIsLoading(true);
       setError('');
-
-      try {
-        const userData = {
-          id: Date.now().toString(),
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          fullName: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          createdAt: new Date().toISOString()
-        };
-        
-        setUser(userData);
-        setSuccess(true);
-        
-        setTimeout(() => {
-          setIsAuthenticated(true);
-          setCurrentView('match');
-        }, 1500);
-        
-      } catch (err) {
-        setError('Failed to create account');
-      } finally {
-        setIsLoading(false);
+      
+      const {data, error} = await supabase.from('survey_answers').insert([formData]);
+      
+      if(error){
+        console.log(error)
+        setError("please fill in all of the fields correctly")
       }
+
+      if(data){
+        console.log(data)
+        setError('')
+      }
+
+
+      // try {
+      //   const userData = {
+      //     id: Date.now().toString(),
+      //     first_name: formData.first_name,
+      //     last_name: formData.last_name,
+      //     fullName: `${formData.first_name} ${formData.last_name}`,
+      //     email: formData.email,
+      //     createdAt: new Date().toISOString()
+      //   };
+        
+      //   setUser(userData);
+      //   setSuccess(true);
+        
+      //   setTimeout(() => {
+      //     setIsAuthenticated(true);
+      //     setCurrentView('match');
+      //   }, 1500);
+        
+      // } catch (err) {
+      //   setError('Failed to create account');
+      // } finally {
+      //   setIsLoading(false);
+      // }
     };
 
     if (success) {
@@ -251,7 +348,7 @@ export default function CupidDatingApp() {
               Account Created!
             </h1>
             <p className="text-gray-600 mb-6">
-              Welcome to Cupid, {formData.firstName}! Redirecting you to your dashboard...
+              Welcome to Cupid, {formData.first_name}! Redirecting you to your dashboard...
             </p>
             <div className="w-8 h-8 mx-auto animate-spin">
               <div className="w-full h-full border-4 border-pink-200 border-t-pink-500 rounded-full"></div>
@@ -280,8 +377,8 @@ export default function CupidDatingApp() {
               <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
               <input
                 type="text"
-                name="firstName"
-                value={formData.firstName}
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none transition-colors"
                 required
@@ -294,8 +391,8 @@ export default function CupidDatingApp() {
               <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
               <input
                 type="text"
-                name="lastName"
-                value={formData.lastName}
+                name="last_name"
+                value={formData.last_name}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none transition-colors"
                 required
@@ -303,6 +400,21 @@ export default function CupidDatingApp() {
                 placeholder="Enter your last name"
               />
             </div>
+
+            <div className="text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Age</label>
+              <input
+                type="number"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-pink-500 focus:outline-none transition-colors"
+                required
+                disabled={isLoading}
+                placeholder="Enter your last name"
+              />
+            </div>
+
 
             <div className="text-left">
               <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
@@ -348,7 +460,95 @@ export default function CupidDatingApp() {
             </div>
 
             <div className="text-left">
-              <label htmlFor="longq" className="block text-sm font-medium text-gray-700 mb-2">Long Question (max 100 characters)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Food and Dating: {q1[q1indx]}</label>
+              <label key='o1' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question1'
+                  value={"Option 1" + '\n' + q1[q1indx]}
+                  onChange={handleChange}
+                  />
+                  Option 1
+              </label>
+              <label key='o2' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question1'
+                  value={"Option 2" + '\n' + q1[q1indx]}
+                  onChange={handleChange}
+                  />
+                  Option 2
+              </label>
+            </div>
+
+            <div className="text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Relationship Scenarios: {q2[q2indx]}</label>
+              <label key='o1' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question2'
+                  value={"Option 1" + '\n' + q2[q2indx]}
+                  onChange={handleChange}
+                  />
+                  Option 1
+              </label>
+              <label key='o2' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question2'
+                  value={"Option 2" + '\n' + q2[q2indx]}
+                  onChange={handleChange}
+                  />
+                  Option 2
+              </label>
+            </div>
+
+            <div className="text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Personality Quirks: {q3[q3indx]}</label>
+              <label key='o1' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question3'
+                  value={"Option 1" + '\n' + q3[q3indx]}
+                  onChange={handleChange}
+                  />
+                  Option 1
+              </label>
+              <label key='o2' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question3'
+                  value={"Option 2" + '\n' + q3[q3indx]}
+                  onChange={handleChange}
+                  />
+                  Option 2
+              </label>
+            </div>
+
+            <div className="text-left">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Date Disasters: {q4[q4indx]}</label>
+              <label key='o1' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question4'
+                  value={"Option 1" + '\n' + q4[q4indx]}
+                  onChange={handleChange}
+                  />
+                  Option 1
+              </label>
+              <label key='o2' style={{ display: 'block' }}>
+                  <input
+                  type="radio"
+                  name='question4'
+                  value={"Option 2" + '\n' + q4[q4indx]}
+                  onChange={handleChange}
+                  />
+                  Option 2
+              </label>
+            </div>
+
+            <div className="text-left">
+              <label htmlFor="longq" className="block text-sm font-medium text-gray-700 mb-2">Long Question: {longques[longquesindx]}</label>
               <input
                 type="text"
                 id="longq"
@@ -419,8 +619,8 @@ export default function CupidDatingApp() {
         setTimeout(() => {
           const userData = {
             id: '1',
-            firstName: 'Demo',
-            lastName: 'User',
+            first_name: 'Demo',
+            last_name: 'User',
             fullName: 'Demo User',
             email: formData.email,
             createdAt: new Date().toISOString()
@@ -513,13 +713,13 @@ export default function CupidDatingApp() {
   };
 
   // Match Screen Component
-  const MatchScreen = () => {
-    const [profiles, setProfiles] = useState(sampleProfiles);
-    const [showMatchResult, setShowMatchResult] = useState(false);
-    const [matchDecision, setMatchDecision] = useState(null);
-    const [matchScore, setMatchScore] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [matchId, setMatchId] = useState(null);
+  // const MatchScreen = () => {
+  //   const [profiles, setProfiles] = useState(sampleProfiles);
+  //   const [showMatchResult, setShowMatchResult] = useState(false);
+  //   const [matchDecision, setMatchDecision] = useState(null);
+  //   const [matchScore, setMatchScore] = useState(0);
+  //   const [loading, setLoading] = useState(false);
+  //   const [matchId, setMatchId] = useState(null);
 
     // const calculateCompatibility = () => {
     //   if (profiles.length < 2) return { score: 0, reasons: [] };
@@ -560,233 +760,233 @@ export default function CupidDatingApp() {
     //   return { score: Math.min(score, 100), reasons };
     // };
 
-    const handleMatch = async (isMatch) => {
-      if (profiles.length < 2) return;
+  //   const handleMatch = async (isMatch) => {
+  //     if (profiles.length < 2) return;
 
-      const compatibility = calculateCompatibility();
-      setMatchScore(compatibility.score);
-      setMatchDecision({ isMatch, reasons: compatibility.reasons });
-      setShowMatchResult(true);
-      setMatchId(`match_${Date.now()}`);
-    };
+  //     const compatibility = calculateCompatibility();
+  //     setMatchScore(compatibility.score);
+  //     setMatchDecision({ isMatch, reasons: compatibility.reasons });
+  //     setShowMatchResult(true);
+  //     setMatchId(`match_${Date.now()}`);
+  //   };
 
-    const resetMatch = () => {
-      setShowMatchResult(false);
-      setMatchDecision(null);
-      setMatchScore(0);
-      setMatchId(null);
-    };
+  //   const resetMatch = () => {
+  //     setShowMatchResult(false);
+  //     setMatchDecision(null);
+  //     setMatchScore(0);
+  //     setMatchId(null);
+  //   };
 
-    const ProfileCard = ({ profile, side }) => (
-      <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-200">
-        <div className="relative h-64 overflow-hidden">
-          <img 
-            src={profile.photo} 
-            alt={profile.name}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute top-3 right-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded-full text-xs backdrop-blur">
-            {profile.distance}
-          </div>
-        </div>
+  //   const ProfileCard = ({ profile, side }) => (
+  //     <div className="bg-white rounded-2xl shadow-2xl overflow-hidden hover:scale-105 transition-transform duration-200">
+  //       <div className="relative h-64 overflow-hidden">
+  //         <img 
+  //           src={profile.photo} 
+  //           alt={profile.name}
+  //           className="w-full h-full object-cover"
+  //         />
+  //         <div className="absolute top-3 right-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded-full text-xs backdrop-blur">
+  //           {profile.distance}
+  //         </div>
+  //       </div>
 
-        <div className="p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-xl font-bold text-gray-900">{profile.name}</h3>
-            <span className="text-lg text-gray-600">{profile.age}</span>
-          </div>
+  //       <div className="p-4">
+  //         <div className="flex items-center gap-2 mb-2">
+  //           <h3 className="text-xl font-bold text-gray-900">{profile.name}</h3>
+  //           <span className="text-lg text-gray-600">{profile.age}</span>
+  //         </div>
 
-          <div className="flex items-center gap-1 mb-3 text-gray-600 text-sm">
-            <MapPin className="w-3 h-3" />
-            <span>{profile.location}</span>
-          </div>
+  //         <div className="flex items-center gap-1 mb-3 text-gray-600 text-sm">
+  //           <MapPin className="w-3 h-3" />
+  //           <span>{profile.location}</span>
+  //         </div>
 
-          <div className="space-y-2 mb-3 text-sm">
-            <div className="flex items-center gap-1 text-gray-700">
-              <Briefcase className="w-3 h-3" />
-              <span>{profile.occupation}</span>
-            </div>
-            <div className="flex items-center gap-1 text-gray-700">
-              <GraduationCap className="w-3 h-3" />
-              <span>{profile.education}</span>
-            </div>
-          </div>
+  //         <div className="space-y-2 mb-3 text-sm">
+  //           <div className="flex items-center gap-1 text-gray-700">
+  //             <Briefcase className="w-3 h-3" />
+  //             <span>{profile.occupation}</span>
+  //           </div>
+  //           <div className="flex items-center gap-1 text-gray-700">
+  //             <GraduationCap className="w-3 h-3" />
+  //             <span>{profile.education}</span>
+  //           </div>
+  //         </div>
 
-          <p className="text-gray-700 text-sm mb-3 line-clamp-3">
-            {profile.bio}
-          </p>
+  //         <p className="text-gray-700 text-sm mb-3 line-clamp-3">
+  //           {profile.bio}
+  //         </p>
 
-          {profile.interests && profile.interests.length > 0 && (
-            <div className="mb-3">
-              <h4 className="text-xs font-semibold text-gray-500 mb-2">INTERESTS</h4>
-              <div className="flex flex-wrap gap-1">
-                {profile.interests.map((interest, index) => (
-                  <span key={index} className="bg-gradient-to-r from-pink-100 to-purple-100 text-gray-700 px-2 py-1 rounded-full text-xs border border-pink-200">
-                    {interest}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+  //         {profile.interests && profile.interests.length > 0 && (
+  //           <div className="mb-3">
+  //             <h4 className="text-xs font-semibold text-gray-500 mb-2">INTERESTS</h4>
+  //             <div className="flex flex-wrap gap-1">
+  //               {profile.interests.map((interest, index) => (
+  //                 <span key={index} className="bg-gradient-to-r from-pink-100 to-purple-100 text-gray-700 px-2 py-1 rounded-full text-xs border border-pink-200">
+  //                   {interest}
+  //                 </span>
+  //               ))}
+  //             </div>
+  //           </div>
+  //         )}
 
-          {profile.personality && profile.personality.length > 0 && (
-            <div>
-              <h4 className="text-xs font-semibold text-gray-500 mb-2">PERSONALITY</h4>
-              <div className="flex flex-wrap gap-1">
-                {profile.personality.map((trait, index) => (
-                  <span key={index} className="bg-gradient-to-r from-blue-100 to-indigo-100 text-gray-700 px-2 py-1 rounded-full text-xs border border-blue-200">
-                    {trait}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
+  //         {profile.personality && profile.personality.length > 0 && (
+  //           <div>
+  //             <h4 className="text-xs font-semibold text-gray-500 mb-2">PERSONALITY</h4>
+  //             <div className="flex flex-wrap gap-1">
+  //               {profile.personality.map((trait, index) => (
+  //                 <span key={index} className="bg-gradient-to-r from-blue-100 to-indigo-100 text-gray-700 px-2 py-1 rounded-full text-xs border border-blue-200">
+  //                   {trait}
+  //                 </span>
+  //               ))}
+  //             </div>
+  //           </div>
+  //         )}
+  //       </div>
+  //     </div>
+  //   );
 
-    if (loading) {
-      return (
-        <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100 flex items-center justify-center">
-          <div className="text-center">
-            <Loader className="w-8 h-8 animate-spin mx-auto mb-4 text-pink-500" />
-            <p className="text-gray-600">Loading profiles...</p>
-          </div>
-        </div>
-      );
-    }
+  //   if (loading) {
+  //     return (
+  //       <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100 flex items-center justify-center">
+  //         <div className="text-center">
+  //           <Loader className="w-8 h-8 animate-spin mx-auto mb-4 text-pink-500" />
+  //           <p className="text-gray-600">Loading profiles...</p>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100">
-        <div className="max-w-6xl mx-auto p-6">
-          {!showMatchResult ? (
-            <>
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-3">
-                  Are {profiles[0]?.name} and {profiles[1]?.name} a Good Match?
-                </h1>
-                <p className="text-gray-600 max-w-2xl mx-auto">
-                  Review both profiles below and decide if these two people would be compatible. 
-                  Consider their interests, personalities, and what they're looking for.
-                </p>
-              </div>
+  //   return (
+  //     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100">
+  //       <div className="max-w-6xl mx-auto p-6">
+  //         {!showMatchResult ? (
+  //           <>
+  //             <div className="text-center mb-8">
+  //               <h1 className="text-3xl font-bold text-gray-900 mb-3">
+  //                 Are {profiles[0]?.name} and {profiles[1]?.name} a Good Match?
+  //               </h1>
+  //               <p className="text-gray-600 max-w-2xl mx-auto">
+  //                 Review both profiles below and decide if these two people would be compatible. 
+  //                 Consider their interests, personalities, and what they're looking for.
+  //               </p>
+  //             </div>
 
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div className="inline-block bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-semibold mb-4">
-                      Profile 1
-                    </div>
-                  </div>
-                  <ProfileCard profile={profiles[0]} side="left" />
-                </div>
+  //             <div className="grid md:grid-cols-2 gap-8 mb-8">
+  //               <div className="space-y-4">
+  //                 <div className="text-center">
+  //                   <div className="inline-block bg-pink-100 text-pink-700 px-4 py-2 rounded-full font-semibold mb-4">
+  //                     Profile 1
+  //                   </div>
+  //                 </div>
+  //                 <ProfileCard profile={profiles[0]} side="left" />
+  //               </div>
 
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold mb-4">
-                      Profile 2
-                    </div>
-                  </div>
-                  <ProfileCard profile={profiles[1]} side="right" />
-                </div>
-              </div>
+  //               <div className="space-y-4">
+  //                 <div className="text-center">
+  //                   <div className="inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold mb-4">
+  //                     Profile 2
+  //                   </div>
+  //                 </div>
+  //                 <ProfileCard profile={profiles[1]} side="right" />
+  //               </div>
+  //             </div>
 
-              <div className="flex justify-center gap-8">
-                <button 
-                  onClick={() => handleMatch(false)}
-                  className="flex items-center gap-3 px-8 py-4 bg-white border-2 border-red-200 text-red-600 font-semibold rounded-2xl hover:bg-red-50 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
-                >
-                  <X className="w-6 h-6" />
-                  Not a Match
-                </button>
+  //             <div className="flex justify-center gap-8">
+  //               <button 
+  //                 onClick={() => handleMatch(false)}
+  //                 className="flex items-center gap-3 px-8 py-4 bg-white border-2 border-red-200 text-red-600 font-semibold rounded-2xl hover:bg-red-50 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
+  //               >
+  //                 <X className="w-6 h-6" />
+  //                 Not a Match
+  //               </button>
                 
-                <button 
-                  onClick={() => handleMatch(true)}
-                  className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-2xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
-                >
-                  <Heart className="w-6 h-6" />
-                  Perfect Match!
-                </button>
-              </div>
-            </>
-          ) : (
-            <div className="max-w-2xl mx-auto">
-              <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
-                <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${
-                  matchDecision?.isMatch ? 'bg-gradient-to-r from-pink-500 to-purple-600' : 'bg-gradient-to-r from-gray-400 to-gray-500'
-                }`}>
-                  {matchDecision?.isMatch ? (
-                    <Heart className="w-10 h-10 text-white" />
-                  ) : (
-                    <X className="w-10 h-10 text-white" />
-                  )}
-                </div>
+  //               <button 
+  //                 onClick={() => handleMatch(true)}
+  //                 className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-2xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
+  //               >
+  //                 <Heart className="w-6 h-6" />
+  //                 Perfect Match!
+  //               </button>
+  //             </div>
+  //           </>
+  //         ) : (
+  //           <div className="max-w-2xl mx-auto">
+  //             <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+  //               <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${
+  //                 matchDecision?.isMatch ? 'bg-gradient-to-r from-pink-500 to-purple-600' : 'bg-gradient-to-r from-gray-400 to-gray-500'
+  //               }`}>
+  //                 {matchDecision?.isMatch ? (
+  //                   <Heart className="w-10 h-10 text-white" />
+  //                 ) : (
+  //                   <X className="w-10 h-10 text-white" />
+  //                 )}
+  //               </div>
 
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  {matchDecision?.isMatch ? "You Think They're a Match!" : "You Think They're Not Compatible"}
-                </h2>
+  //               <h2 className="text-3xl font-bold text-gray-900 mb-4">
+  //                 {matchDecision?.isMatch ? "You Think They're a Match!" : "You Think They're Not Compatible"}
+  //               </h2>
 
-                <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-6 mb-6">
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Zap className="w-5 h-5 text-purple-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Compatibility Analysis</h3>
-                  </div>
+  //               <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-6 mb-6">
+  //                 <div className="flex items-center justify-center gap-2 mb-3">
+  //                   <Zap className="w-5 h-5 text-purple-600" />
+  //                   <h3 className="text-lg font-semibold text-gray-900">Compatibility Analysis</h3>
+  //                 </div>
                   
-                  <div className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-3">
-                    {matchScore}%
-                  </div>
+  //                 <div className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-3">
+  //                   {matchScore}%
+  //                 </div>
 
-                  {matchDecision && matchDecision.reasons.length > 0 && (
-                    <div className="mt-4">
-                      <h4 className="font-medium text-gray-700 mb-2">Why they could work:</h4>
-                      {matchDecision.reasons.map((reason, index) => (
-                        <div key={index} className="text-sm text-gray-600 bg-white bg-opacity-50 rounded-lg p-3 mb-2">
-                          • {reason}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+  //                 {matchDecision && matchDecision.reasons.length > 0 && (
+  //                   <div className="mt-4">
+  //                     <h4 className="font-medium text-gray-700 mb-2">Why they could work:</h4>
+  //                     {matchDecision.reasons.map((reason, index) => (
+  //                       <div key={index} className="text-sm text-gray-600 bg-white bg-opacity-50 rounded-lg p-3 mb-2">
+  //                         • {reason}
+  //                       </div>
+  //                     ))}
+  //                   </div>
+  //                 )}
+  //               </div>
 
-                <div className="text-gray-600 mb-6">
-                  {matchDecision?.isMatch 
-                    ? "Great eye for compatibility! These profiles show several areas of potential connection."
-                    : "Everyone has different preferences. Maybe they're better as friends, or perhaps you see something that would make them incompatible."
-                  }
-                </div>
+  //               <div className="text-gray-600 mb-6">
+  //                 {matchDecision?.isMatch 
+  //                   ? "Great eye for compatibility! These profiles show several areas of potential connection."
+  //                   : "Everyone has different preferences. Maybe they're better as friends, or perhaps you see something that would make them incompatible."
+  //                 }
+  //               </div>
 
-                {matchId && (
-                  <div className="text-xs text-gray-400 mb-6">
-                    Match ID: {matchId}
-                  </div>
-                )}
+  //               {matchId && (
+  //                 <div className="text-xs text-gray-400 mb-6">
+  //                   Match ID: {matchId}
+  //                 </div>
+  //               )}
 
-                <button 
-                  onClick={resetMatch}
-                  className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
-                >
-                  Try New Profiles
-                </button>
+  //               <button 
+  //                 onClick={resetMatch}
+  //                 className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200"
+  //               >
+  //                 Try New Profiles
+  //               </button>
 
-                <div className="mt-6">
-                  <button 
-                    onClick={() => {
-                      setIsAuthenticated(false);
-                      setUser(null);
-                      setCurrentView('home');
-                    }}
-                    className="text-gray-500 hover:text-gray-600 text-sm font-medium"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
+  //               <div className="mt-6">
+  //                 <button 
+  //                   onClick={() => {
+  //                     setIsAuthenticated(false);
+  //                     setUser(null);
+  //                     setCurrentView('home');
+  //                   }}
+  //                   className="text-gray-500 hover:text-gray-600 text-sm font-medium"
+  //                 >
+  //                   Sign Out
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         )}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   // Main app logic with loading effect
   useEffect(() => {
@@ -798,16 +998,16 @@ export default function CupidDatingApp() {
   }, []);
 
   // Check authentication status
-  useEffect(() => {
-    if (isAuthenticated && (currentView === 'register' || currentView === 'login')) {
-      setCurrentView('match');
-    }
-  }, [isAuthenticated, currentView]);
+  // useEffect(() => {
+  //   if (isAuthenticated && (currentView === 'register' || currentView === 'login')) {
+  //     setCurrentView('match');
+  //   }
+  // }, [isAuthenticated, currentView]);
 
   // Prevent authenticated users from accessing auth pages
-  if (isAuthenticated && (currentView === 'register' || currentView === 'login' || currentView === 'home')) {
-    return <MatchScreen />;
-  }
+  // if (isAuthenticated && (currentView === 'register' || currentView === 'login' || currentView === 'home')) {
+  //   return <MatchScreen />;
+  // }
 
   // Render current view
   switch (currentView) {
@@ -819,8 +1019,8 @@ export default function CupidDatingApp() {
       return <RegisterScreen />;
     case 'login':
       return <LoginScreen />;
-    case 'match':
-      return <MatchScreen />;
+    // case 'match':
+    //   return <MatchScreen />;
     default:
       return <HomeScreen />;
   }
