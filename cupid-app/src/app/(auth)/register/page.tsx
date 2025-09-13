@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react';
+import supabase from 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './register.module.css';
