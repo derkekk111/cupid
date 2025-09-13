@@ -14,7 +14,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
 
   const [profiles, setProfiles] = useState<Profile[]>(initialProfiles || []);
   const [showMatchResult, setShowMatchResult] = useState<boolean>(false);
-  const [matchDecision, setMatchDecision] = useState<MatchDecision | null>(null);
+  const [matchDecision, setMatchDecision] = useState<boolean>(false);
   const [matchScore, setMatchScore] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [matchId, setMatchId] = useState<string | null>(null);
@@ -48,68 +48,11 @@ export default function match({ initialProfiles }: DatingAppProps) {
     }
   };
 
-  const calculateCompatibility = (): CompatibilityResult => {
-    if (profiles.length < 2) return { score: 0, reasons: [] };
-    
-    const [profile1, profile2] = profiles;
-    let score = 0;
-    const reasons: string[] = [];
-
-    // Check shared interests
-    const sharedInterests = profile1.interests?.filter(interest => 
-      profile2.interests?.includes(interest)
-    ) || [];
-    
-    if (sharedInterests.length > 0) {
-      score += sharedInterests.length * 20;
-      reasons.push(`Both love ${sharedInterests.join(' and ')}`);
-    }
-
-    // Check age compatibility (within 5 years gets bonus)
-    const ageDiff = Math.abs(profile1.age - profile2.age);
-    if (ageDiff <= 5) {
-      score += 15;
-      reasons.push("Similar age range");
-    }
-
-    // Same location bonus
-    if (profile1.location === profile2.location) {
-      score += 25;
-      reasons.push(`Both in ${profile1.location.split(',')[0]}`);
-    }
-
-    // Personality compatibility
-    const sharedTraits = profile1.personality?.filter(trait => 
-      profile2.personality?.includes(trait)
-    ) || [];
-    
-    if (sharedTraits.length > 0) {
-      score += sharedTraits.length * 15;
-      reasons.push(`Both are ${sharedTraits.join(' and ')}`);
-    }
-
-    // Complementary careers
-    const isComplementary = (
-      (profile1.occupation.toLowerCase().includes("designer") && profile2.occupation.toLowerCase().includes("engineer")) ||
-      (profile1.occupation.toLowerCase().includes("engineer") && profile2.occupation.toLowerCase().includes("designer")) ||
-      (profile1.occupation.toLowerCase().includes("creative") && profile2.occupation.toLowerCase().includes("technical")) ||
-      (profile1.occupation.toLowerCase().includes("technical") && profile2.occupation.toLowerCase().includes("creative"))
-    );
-
-    if (isComplementary) {
-      score += 20;
-      reasons.push("Complementary professional skills");
-    }
-
-    return { score: Math.min(score, 100), reasons };
-  };
-
+  
   const handleMatch = async (isMatch: boolean): Promise<void> => {
     if (profiles.length < 2) return;
 
-    const compatibility = calculateCompatibility();
-    setMatchScore(compatibility.score);
-    setMatchDecision({ isMatch, reasons: compatibility.reasons });
+    setMatchDecision(isMatch);
     setShowMatchResult(true);
 
     // Save match decision to database
@@ -123,8 +66,6 @@ export default function match({ initialProfiles }: DatingAppProps) {
           profile1Id: profiles[0].id,
           profile2Id: profiles[1].id,
           isMatch,
-          compatibilityScore: compatibility.score,
-          reasons: compatibility.reasons,
         }),
       });
 
@@ -141,8 +82,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
 
   const resetMatch = async (): Promise<void> => {
     setShowMatchResult(false);
-    setMatchDecision(null);
-    setMatchScore(0);
+    setMatchDecision(false);
     setMatchId(null);
     
     // Fetch new profiles
@@ -332,9 +272,9 @@ export default function match({ initialProfiles }: DatingAppProps) {
           <div className={styles.resultContainer}>
             <div className={styles.resultCard}>
               <div className={`${styles.resultIcon} ${
-                matchDecision?.isMatch ? styles.matchIcon : styles.noMatchIcon
+                matchDecision ? styles.matchIcon : styles.noMatchIcon
               }`}>
-                {matchDecision?.isMatch ? (
+                {matchDecision ? (
                   <Heart className={styles.resultIconSvg} />
                 ) : (
                   <X className={styles.resultIconSvg} />
@@ -342,35 +282,12 @@ export default function match({ initialProfiles }: DatingAppProps) {
               </div>
 
               <h2 className={styles.resultTitle}>
-                {matchDecision?.isMatch ? "You Think They're a Match!" : "You Think They're Not Compatible"}
+                {matchDecision? "You Think They're a Match!" : "You Think They're Not Compatible"}
               </h2>
 
-              {/* Compatibility Score */}
-              <div className={styles.analysisContainer}>
-                <div className={styles.analysisHeader}>
-                  <Zap className={styles.analysisIcon} />
-                  <h3 className={styles.analysisTitle}>Compatibility Analysis</h3>
-                </div>
-                
-                <div className={styles.score}>
-                  {matchScore}%
-                </div>
-
-                {matchDecision && matchDecision.reasons.length > 0 && (
-                  <div className={styles.reasonsContainer}>
-                    <h4 className={styles.reasonsTitle}>Why they could work:</h4>
-                    {matchDecision.reasons.map((reason, index) => (
-                      <div key={index} className={styles.reason}>
-                        • {reason}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               <div className={styles.resultMessage}>
-                {matchDecision?.isMatch 
-                  ? "Great eye for compatibility! These profiles show several areas of potential connection."
+                {matchDecision?
+                  "Great eye for compatibility! These profiles show several areas of potential connection."
                   : "Everyone has different preferences. Maybe they're better as friends, or perhaps you see something that would make them incompatible."
                 }
               </div>

@@ -32,7 +32,6 @@ export interface CompatibilityResult {
 
 export interface MatchDecision {
   isMatch: boolean;
-  reasons: string[];
 }
 
 export interface ApiResponse<T = any> {
