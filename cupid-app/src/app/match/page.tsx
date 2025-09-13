@@ -261,7 +261,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
+      {/* <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.title}>
             Cupid Dating App
@@ -271,7 +271,7 @@ export default function match({ initialProfiles }: DatingAppProps) {
             <span className={styles.subtitleText}>Profile Compatibility</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.main}>
         {!showMatchResult ? (
